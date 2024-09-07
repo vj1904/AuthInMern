@@ -1,7 +1,8 @@
 import { useState } from "react";
 import styles from "./styles.module.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
+import { baseUrl } from "../../Urls";
 
 const Signup = () => {
   const [data, setData] = useState({
@@ -12,8 +13,7 @@ const Signup = () => {
   });
 
   const [error, setError] = useState("");
-
-  const navigate = useNavigate();
+  const [msg, setMsg] = useState("");
 
   const handleChange = ({ currentTarget: input }) => {
     setData({ ...data, [input.name]: input.value });
@@ -22,10 +22,9 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const url = "http://localhost:3000/api/users";
+      const url = `${baseUrl}/api/users`;
       const { data: res } = await axios.post(url, data);
-      navigate("/login");
-      console.log(res.message);
+      setMsg(res.message)
     } catch (error) {
       if (
         error.response &&
@@ -92,6 +91,7 @@ const Signup = () => {
               className={styles.input}
             />
             {error && <div className={styles.error_msg}>{error}</div>}
+            {msg && <div className={styles.success_msg}>{msg}</div>}
             <button type="submit" className={styles.green_btn}>
               Sign up
             </button>
