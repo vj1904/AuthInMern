@@ -21,15 +21,17 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(""); // Clear the previous error
+    setMsg(""); // Clear the previous message
     try {
-      const url = `${baseUrl}/api/users`;
+      const url = `${baseUrl}/api/users`; //baseUrl should point to the backend api route.
       const { data: res } = await axios.post(url, data);
-      setMsg(res.message)
+      setMsg(res.message);
     } catch (error) {
       if (
         error.response &&
         error.response.status >= 400 &&
-        error.status <= 500
+        error.response.status <= 500
       ) {
         setError(error.response.data.message);
       }
@@ -54,7 +56,6 @@ const Signup = () => {
               type="text"
               placeholder="First Name"
               name="firstName"
-              id="firstName"
               onChange={handleChange}
               value={data.firstName}
               required
@@ -64,7 +65,6 @@ const Signup = () => {
               type="text"
               placeholder="Last Name"
               name="lastName"
-              id="lastName"
               onChange={handleChange}
               value={data.lastName}
               required
@@ -74,7 +74,6 @@ const Signup = () => {
               type="email"
               placeholder="Email"
               name="email"
-              id="email"
               onChange={handleChange}
               value={data.email}
               required
@@ -84,7 +83,6 @@ const Signup = () => {
               type="password"
               placeholder="Password"
               name="password"
-              id="password"
               onChange={handleChange}
               value={data.password}
               required

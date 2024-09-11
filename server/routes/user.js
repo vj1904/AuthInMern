@@ -48,17 +48,23 @@ router.post("/", async (req, res) => {
         "An email has been sent to your account. Please click the link to verify.",
     });
   } catch (error) {
-    console.error(error.message);
+    console.log(error.message);
     return res.status(500).send({ message: "Internal server error" });
   }
 });
 
+//route to verify link sent to user and update there status to verified;
 router.get("/:id/verify/:token", async (req, res) => {
   try {
     //Find user by ID
 
     const user = await User.findById(req.params.id);
     if (!user) return res.status(400).send({ message: "User does not exist" });
+
+    //Check if the user is already verified
+    if (user.verified) {
+      return res.status(400).send({ message: "Email is already verified" });
+    }
 
     //Find the token
     const token = await Token.findOne({
@@ -69,7 +75,8 @@ router.get("/:id/verify/:token", async (req, res) => {
       return res.status(400).send({ message: "invalid or expired token" });
 
     //Update user's verified status
-    await User.updateOne({ _id: user._id, verified: true });
+    user.verified = true;
+    await user.save();
 
     //Delete the verification token after successfull verification
     await Token.deleteOne({ _id: token._id });

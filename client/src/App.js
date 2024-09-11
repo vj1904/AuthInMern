@@ -12,7 +12,7 @@ function App() {
       <Route path="/signup" exact element={<Signup />} />
       <Route path="/login" exact element={<Login />} />
       <Route path="/" exact element={<Navigate replace to="/login" />} />
-      <Route path="/users/:id/verify/:token" exact element={<EmailVerify />} />
+      <Route path="/users/:id/verify/:token" element={<EmailVerify />} />
     </Routes>
   );
 }

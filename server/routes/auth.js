@@ -36,13 +36,14 @@ router.post("/", async (req, res) => {
             token: crypto.randomBytes(32).toString("hex"),
           });
           await token.save();
-    
+
           const url = `${process.env.BASE_URL}/users/${user._id}/verify/${token.token}`;
           await sendEmail(user.email, "Verify Email", url);
         }
-    
+
         return res.status(400).send({
-          message: "An email is sent to your account. Please click on the link to verify.",
+          message:
+            "An email is sent to your account. Please click on the link to verify.",
         });
       } catch (error) {
         return res.status(500).send({
@@ -51,7 +52,6 @@ router.post("/", async (req, res) => {
         });
       }
     }
-    
 
     const token = user.generateAuthToken();
     res.status(200).send({ data: token, message: "Logged in successfully" });
