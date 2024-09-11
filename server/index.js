@@ -18,7 +18,15 @@ connectMongoDB(process.env.DB)
 //middlewares
 app.use(express.json());
 app.use(cors());
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000", // for local development
+      "https://authinmern.vercel.app", // your Vercel frontend
+    ],
+    credentials: true, // If you need to send cookies or credentials, include this line
+  })
+);
 app.use(express.urlencoded({ extended: true }));
 
 //routes
